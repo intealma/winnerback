@@ -30,6 +30,14 @@ const COUNTRIES = [
 ];
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Parallax bara med mus. På pekskärmar ligger skript alltid en bildruta efter fingret, så där får bilden följa sidan.
+const mouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+// iPhone struntar i overflow på body, så låset sätts på html också.
+const lockScroll = (on) => {
+  document.documentElement.style.overflow = on ? 'hidden' : '';
+  document.body.style.overflow = on ? 'hidden' : '';
+};
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -118,9 +126,12 @@ function renderMarquee() {
 function initHeader() {
   const header = document.getElementById('header');
   const hero = document.querySelector('.hero');
-  const setSolid = () => header.classList.toggle('is-solid', window.scrollY > hero.offsetHeight - header.offsetHeight);
+  let threshold = 0;
+  const measure = () => { threshold = hero.offsetHeight - header.offsetHeight; };
+  const setSolid = () => header.classList.toggle('is-solid', window.scrollY > threshold);
   window.addEventListener('scroll', setSolid, { passive: true });
-  window.addEventListener('resize', setSolid);
+  window.addEventListener('resize', () => { measure(); setSolid(); });
+  measure();
   setSolid();
 
   // Markera aktuell sektion i menyn
@@ -153,7 +164,7 @@ function initHeader() {
     overlay.classList.toggle('is-open', open);
     overlay.setAttribute('aria-hidden', String(!open));
     toggle.setAttribute('aria-expanded', String(open));
-    document.body.style.overflow = open ? 'hidden' : '';
+    lockScroll(open);
     if (open) overlay.querySelector('nav a').focus({ preventScroll: true });
   };
   toggle.addEventListener('click', () => setMenu(true));
@@ -195,7 +206,8 @@ function initReveal() {
 }
 
 function initParallax() {
-  if (reduceMotion) return;
+  if (reduceMotion || !mouse) return;
+  document.documentElement.classList.add('has-parallax');
   const hero = document.querySelector('[data-parallax]');
   const band = document.querySelector('[data-parallax-band]');
   let ticking = false;
@@ -266,13 +278,13 @@ function initLightbox() {
     show(i);
     box.classList.add('is-open');
     box.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    lockScroll(true);
     box.querySelector('[data-lb="close"]').focus();
   };
   const close = () => {
     box.classList.remove('is-open');
     box.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+    lockScroll(false);
     if (lastFocus) lastFocus.focus();
   };
 
@@ -283,6 +295,21 @@ function initLightbox() {
     else if (action === 'next') show(index + 1);
     else if (action === 'close' || e.target === box) close();
   });
+  // Svep åt sidan för att bläddra på mobil
+  let startX = null;
+  let startY = 0;
+  box.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  box.addEventListener('touchend', (e) => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    startX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
+  });
+
   document.addEventListener('keydown', (e) => {
     if (!box.classList.contains('is-open')) return;
     if (e.key === 'Escape') close();

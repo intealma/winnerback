@@ -34,6 +34,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 8px);
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -45,6 +46,7 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 img { display: block; max-width: 100%; }
@@ -62,7 +64,8 @@ button { font: inherit; color: inherit; }
   width: 100%;
   max-width: var(--max);
   margin: 0 auto;
-  padding: 0 var(--gutter);
+  /* keep clear of the notch when a phone is turned sideways */
+  padding: 0 max(var(--gutter), env(safe-area-inset-right)) 0 max(var(--gutter), env(safe-area-inset-left));
 }
 
 /* The original site's signature: links get struck through on hover. Kept, and used everywhere. */
@@ -72,7 +75,6 @@ button { font: inherit; color: inherit; }
   text-decoration-color: transparent;
   transition: text-decoration-color .25s, text-decoration-thickness .25s;
 }
-.strike:hover,
 .strike:focus-visible {
   text-decoration-color: currentColor;
   text-decoration-thickness: .09em;
@@ -99,7 +101,8 @@ button { font: inherit; color: inherit; }
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 50;
-  height: var(--header-h);
+  height: calc(var(--header-h) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
   color: var(--white);
   transition: background-color .4s var(--ease), color .4s var(--ease), box-shadow .4s;
 }
@@ -188,23 +191,15 @@ button { font: inherit; color: inherit; }
   transition: background-color .25s, color .25s, border-color .25s;
 }
 .btn .arrow { transition: transform .3s var(--ease); }
-.btn:hover .arrow { transform: translateX(4px); }
-
-.btn--light:hover { background: var(--white); color: var(--deep); border-color: var(--white); }
 .btn--deep { background: var(--deep); color: var(--white); border-color: var(--deep); }
-.btn--deep:hover { background: transparent; color: var(--deep); }
-
-.site-header .btn:hover { background: currentColor; }
-.site-header .btn:hover span { color: var(--sky); }
-.site-header:not(.is-solid) .btn:hover span { color: var(--deep); }
-.site-header .btn:hover .arrow { color: inherit; }
 
 .menu-toggle {
   display: none;
   margin-left: auto;
+  min-height: 44px;
   background: none;
   border: 0;
-  padding: 10px 0 10px 10px;
+  padding: 0 0 0 14px;
   text-transform: uppercase;
   letter-spacing: .1em;
   font-size: 15px;
@@ -218,7 +213,13 @@ button { font: inherit; color: inherit; }
   z-index: 60;
   display: flex;
   flex-direction: column;
-  padding: 20px var(--gutter) 32px;
+  padding:
+    calc(20px + env(safe-area-inset-top))
+    max(var(--gutter), env(safe-area-inset-right))
+    calc(32px + env(safe-area-inset-bottom))
+    max(var(--gutter), env(safe-area-inset-left));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--deep);
   color: var(--white);
   clip-path: inset(0 0 100% 0);
@@ -237,6 +238,7 @@ button { font: inherit; color: inherit; }
   height: calc(var(--header-h) - 20px);
 }
 .overlay-close {
+  min-height: 44px;
   background: none;
   border: 0;
   text-transform: uppercase;
@@ -277,8 +279,13 @@ button { font: inherit; color: inherit; }
   background: #1b1d1e;
   color: var(--white);
 }
+/* The photo scrolls with the page. Only desktop mice get the slow parallax (html.has-parallax),
+   because on touch screens a JS-driven offset always trails the finger by a frame. */
 .hero-media {
   position: absolute;
+  inset: 0;
+}
+.has-parallax .hero-media {
   inset: -4% 0 0 0;
   will-change: transform;
 }
@@ -289,9 +296,10 @@ button { font: inherit; color: inherit; }
   object-position: 50% 30%;
   animation: settle 2.4s var(--ease) both;
 }
+/* transform and opacity only, so phones can run it on the GPU */
 @keyframes settle {
-  from { transform: scale(1.12); filter: brightness(.6); }
-  to { transform: scale(1); filter: brightness(1); }
+  from { transform: scale(1.12); opacity: .55; }
+  to { transform: none; opacity: 1; }
 }
 .hero::after {
   content: "";
@@ -306,7 +314,7 @@ button { font: inherit; color: inherit; }
 .hero-inner {
   position: relative;
   z-index: 2;
-  padding-bottom: clamp(28px, 5vh, 56px);
+  padding-bottom: calc(clamp(28px, 5vh, 56px) + env(safe-area-inset-bottom));
 }
 .hero-title {
   margin: 0 0 clamp(20px, 3vh, 36px);
@@ -314,7 +322,8 @@ button { font: inherit; color: inherit; }
   text-transform: uppercase;
   line-height: .84;
   letter-spacing: -.045em;
-  font-size: clamp(3.6rem, 13.6vw, 15rem);
+  /* width-led, but capped by height so a sideways phone still fits the whole hero */
+  font-size: clamp(2.6rem, min(14.6vw, 24svh), 15rem);
 }
 .hero-title > span {
   display: block;
@@ -383,7 +392,6 @@ button { font: inherit; color: inherit; }
   width: max-content;
   animation: marquee 60s linear infinite;
 }
-.marquee:hover .marquee-track { animation-play-state: paused; }
 .marquee-track span {
   padding: 18px 0;
   text-transform: uppercase;
@@ -421,7 +429,7 @@ button { font: inherit; color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 18px;
   border: 1px solid var(--deep);
   border-radius: 999px;
@@ -438,7 +446,6 @@ button { font: inherit; color: inherit; }
   line-height: 1;
   opacity: .7;
 }
-.chip:hover { background: rgba(19,49,59,.08); }
 .chip[aria-pressed="true"] { background: var(--deep); color: var(--white); }
 
 .year-group + .year-group { margin-top: clamp(48px, 7vw, 96px); }
@@ -485,7 +492,6 @@ button { font: inherit; color: inherit; }
   transform-origin: bottom;
   transition: transform .45s var(--ease);
 }
-a.show-row:hover::before,
 a.show-row:focus-visible::before { transform: scaleY(1); transform-origin: top; }
 
 .show-date {
@@ -517,7 +523,6 @@ a.show-row:focus-visible::before { transform: scaleY(1); transform-origin: top; 
   letter-spacing: -.01em;
   transition: transform .45s var(--ease);
 }
-a.show-row:hover .show-city { transform: translateX(10px); }
 .show-venue {
   display: block;
   margin-top: 6px;
@@ -553,9 +558,7 @@ a.show-row:hover .show-city { transform: translateX(10px); }
   white-space: nowrap;
   transition: background-color .25s, color .25s;
 }
-a.show-row:hover .show-cta { background: var(--deep); color: var(--white); }
 .show-cta .arrow { transition: transform .3s var(--ease); }
-a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
 
 .show--soldout .show-cta {
   border-style: dashed;
@@ -619,7 +622,6 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
   object-fit: cover;
   transition: transform 1.2s var(--ease), filter .6s;
 }
-.ph:hover img { transform: scale(1.045); }
 .ph figcaption {
   position: absolute;
   left: 0;
@@ -634,7 +636,6 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
   transform: translateY(6px);
   transition: opacity .3s, transform .3s var(--ease);
 }
-.ph:hover figcaption,
 .ph:focus-within figcaption { opacity: 1; transform: none; }
 .ph button {
   position: absolute;
@@ -665,10 +666,14 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
 }
 .band img {
   position: absolute;
-  inset: -12% 0;
+  inset: 0;
   width: 100%;
-  height: 124%;
+  height: 100%;
   object-fit: cover;
+}
+.has-parallax .band img {
+  inset: -12% 0;
+  height: 124%;
   will-change: transform;
 }
 .band figcaption {
@@ -769,8 +774,6 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
   box-shadow: 0 18px 40px rgba(19,49,59,.28);
   transition: transform .6s var(--ease);
 }
-.record:hover .disc { transform: translateX(42%) rotate(160deg); }
-.record:hover img { transform: translateY(-6px); }
 .record span {
   position: absolute;
   top: calc(100% + 12px);
@@ -909,7 +912,7 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
 .site-footer {
   background: var(--deep);
   color: var(--white);
-  padding: clamp(64px, 9vw, 120px) 0 0;
+  padding: clamp(64px, 9vw, 120px) 0 env(safe-area-inset-bottom);
   overflow: hidden;
 }
 .footer-top {
@@ -962,8 +965,8 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
 /* Publicly hosted concept, so it says so on every screen */
 .demo-badge {
   position: fixed;
-  left: 16px;
-  bottom: 16px;
+  left: max(16px, env(safe-area-inset-left));
+  bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 45;
   padding: 6px 12px 5px;
   border-radius: 999px;
@@ -983,7 +986,12 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
   z-index: 80;
   display: grid;
   grid-template-rows: 1fr auto;
-  padding: clamp(16px, 4vw, 48px);
+  padding:
+    calc(clamp(16px, 4vw, 48px) + env(safe-area-inset-top))
+    max(clamp(16px, 4vw, 48px), env(safe-area-inset-right))
+    calc(clamp(16px, 4vw, 48px) + env(safe-area-inset-bottom))
+    max(clamp(16px, 4vw, 48px), env(safe-area-inset-left));
+  overscroll-behavior: contain;
   background: rgba(11, 32, 40, .96);
   color: var(--white);
   opacity: 0;
@@ -1007,8 +1015,7 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
   letter-spacing: .06em;
 }
 .lightbox-bar div { display: flex; gap: 10px; }
-.lightbox button.btn { min-height: 40px; padding: 0 16px; }
-.lightbox button.btn:hover { background: var(--white); color: var(--deep); }
+.lightbox button.btn { min-height: 44px; padding: 0 16px; }
 
 /* ---------- Reveal on scroll ---------- */
 
@@ -1019,11 +1026,69 @@ a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
 }
 .reveal.is-in { opacity: 1; transform: none; }
 
+/* ---------- Hover (mouse only) ----------
+   Kept apart so a tap on a phone never leaves a row white or a link struck through. */
+
+@media (hover: hover) and (pointer: fine) {
+  .strike:hover { text-decoration-color: currentColor; text-decoration-thickness: .09em; }
+
+  .btn:hover .arrow { transform: translateX(4px); }
+  .btn--light:hover { background: var(--white); color: var(--deep); border-color: var(--white); }
+  .btn--deep:hover { background: transparent; color: var(--deep); }
+  .site-header .btn:hover { background: currentColor; }
+  .site-header .btn:hover span { color: var(--sky); }
+  .site-header:not(.is-solid) .btn:hover span { color: var(--deep); }
+  .lightbox button.btn:hover { background: var(--white); color: var(--deep); }
+
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .chip:hover { background: rgba(19,49,59,.08); }
+
+  a.show-row:hover::before { transform: scaleY(1); transform-origin: top; }
+  a.show-row:hover .show-city { transform: translateX(10px); }
+  a.show-row:hover .show-cta { background: var(--deep); color: var(--white); }
+  a.show-row:hover .show-cta .arrow { transform: translateX(4px); }
+
+  .ph:hover img { transform: scale(1.045); }
+  .ph:hover figcaption { opacity: 1; transform: none; }
+
+  .record:hover .disc { transform: translateX(42%) rotate(160deg); }
+  .record:hover img { transform: translateY(-6px); }
+}
+
+/* ---------- Touch ---------- */
+
+@media (hover: none) {
+  /* a blur behind a fixed bar is costly while scrolling on phones */
+  .site-header.is-solid {
+    background: rgba(153, 192, 204, .97);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  /* quick press feedback instead of hover */
+  a.show-row:active::before { transform: scaleY(1); transition-duration: .12s; }
+  a.show-row:active .show-cta { background: var(--deep); color: var(--white); }
+  .btn:active, .chip:active { opacity: .7; }
+  /* credits are always readable when there is no hover */
+  .ph figcaption { opacity: 1; transform: none; }
+  /* records sit a little further out of their sleeves */
+  .record .disc { transform: translateX(26%) rotate(40deg); }
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1180px) {
   .nav, .site-header .btn { display: none; }
-  .menu-toggle { display: block; }
+  .menu-toggle { display: flex; align-items: center; }
+
+  /* the badge moves up next to Meny so it never covers text near the bottom */
+  .demo-badge {
+    z-index: 55;
+    left: auto;
+    bottom: auto;
+    top: calc(env(safe-area-inset-top) + var(--header-h) / 2);
+    right: calc(max(var(--gutter), env(safe-area-inset-right)) + 62px);
+    transform: translateY(-50%);
+  }
 }
 
 @media (max-width: 900px) {
