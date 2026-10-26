@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lars Winnerbäck</title>
+  <meta name="theme-color" content="#99c0cc">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preload" href="https://cdn.winnerback.se/uploads/sites/92/2026/05/Tuplet_regular_0_3.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/hero-lw.jpg" as="image" media="(min-width: 761px)">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header" id="header">
+    <div class="wrap">
+      <a class="wordmark" href="#top" aria-label="Lars Winnerbäck, till toppen">Lars Winnerbäck</a>
+
+      <nav class="nav" aria-label="Huvudmeny">
+        <a class="strike" href="#konserter">Konserter</a>
+        <a class="strike" href="#musik">Musik</a>
+        <a class="strike" href="#merch">Merch-Vinyl/CD</a>
+        <a class="strike" href="#brev">Utkast till ett brev</a>
+        <div class="follow" data-follow>
+          <button class="strike" type="button" aria-expanded="false" aria-haspopup="true">
+            Följ
+            <svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
+          <ul class="follow-menu">
+            <li><a class="strike" href="https://www.facebook.com/lassewinnerback" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a class="strike" href="https://www.instagram.com/larswinnerback/" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <a class="btn" href="#konserter"><span>Köp biljetter</span></a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="overlay">Meny</button>
+    </div>
+  </header>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="overlay-top">
+      <span class="wordmark">Lars Winnerbäck</span>
+      <button class="overlay-close" type="button">Stäng</button>
+    </div>
+    <nav aria-label="Meny">
+      <a class="strike" href="#konserter">Konserter</a>
+      <a class="strike" href="#musik">Musik</a>
+      <a class="strike" href="#merch">Merch-Vinyl/CD</a>
+      <a class="strike" href="#brev">Mejllistan `Utkast till ett brev´</a>
+    </nav>
+    <div class="overlay-follow">
+      <a class="strike" href="https://www.facebook.com/lassewinnerback" target="_blank" rel="noopener">Facebook</a>
+      <a class="strike" href="https://www.instagram.com/larswinnerback/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+
+  <main id="top">
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Lars Winnerbäck">
+      <picture class="hero-media" data-parallax="0.22">
+        <source media="(max-width: 760px)" srcset="assets/thessing-hander.jpg">
+        <img src="assets/hero-lw.jpg" alt="Lars Winnerbäck, svartvitt porträtt med händerna framför ansiktet. Foto: Anders Thessing" fetchpriority="high">
+      </picture>
+
+      <div class="hero-inner wrap">
+        <h1 class="hero-title">
+          <span><span>Lars</span></span>
+          <span><span>Winnerbäck</span></span>
+        </h1>
+        <div class="hero-bar">
+          <a class="next-show" id="next-show" href="#konserter">
+            <span class="eyebrow">Nästa konsert</span>
+            <strong>30 OKT. Conventum Arena, ÖREBRO</strong>
+          </a>
+          <a class="hero-cue strike" href="#konserter">Konserter <span class="arrow" aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marquee"></div>
+    </div>
+
+    <!-- Konserter -->
+    <section class="section concerts" id="konserter" aria-labelledby="konserter-title">
+      <div class="wrap">
+        <div class="concerts-head">
+          <h2 class="display reveal" id="konserter-title">Konserter</h2>
+          <div class="filters reveal" role="group" aria-label="Land" id="filters"></div>
+        </div>
+        <div id="tour-list"></div>
+      </div>
+    </section>
+
+    <!-- Bilder -->
+    <section class="section photos" id="bilder" aria-labelledby="bilder-title">
+      <div class="wrap">
+        <div class="photos-head">
+          <h2 class="display reveal" id="bilder-title">Bilder</h2>
+          <p class="reveal">Foto: Anders Thessing, Karl-Magnus Boske, Knotan</p>
+        </div>
+
+        <div class="mosaic" id="gallery">
+          <figure class="ph ph--a reveal">
+            <img src="assets/thessing-portratt.jpg" alt="Lars Winnerbäck, svartvitt porträtt" loading="lazy">
+            <figcaption>Foto: Anders Thessing</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--b reveal">
+            <img src="assets/nyponet-2026.jpg" alt="Lars Winnerbäck med band, svartvitt" loading="lazy" style="object-position: 50% 40%">
+            <figcaption>Pressbild: United Stage</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--c reveal">
+            <img src="assets/portratt-2023-farg.jpg" alt="Lars Winnerbäck, porträtt mot mörk bakgrund" loading="lazy">
+            <figcaption>Pressbild: United Stage</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--d reveal">
+            <img src="assets/portratt-2023-mork.jpg" alt="Lars Winnerbäck i mörker" loading="lazy">
+            <figcaption>Pressbild: United Stage</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--e reveal">
+            <img src="assets/boske-vagg.jpg" alt="Lars Winnerbäck mot grå vägg" loading="lazy">
+            <figcaption>Foto: Karl-Magnus Boske</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--f reveal">
+            <img src="assets/bla-dorr.jpg" alt="Lars Winnerbäck framför en blå dörr" loading="lazy">
+            <figcaption>Foto: Knotan</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--g reveal">
+            <img src="assets/portratt-2023-nara.jpg" alt="Lars Winnerbäck, närbild" loading="lazy" style="object-position: 55% 40%">
+            <figcaption>Pressbild: United Stage</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--h reveal">
+            <img src="assets/boske-band.jpg" alt="Lars Winnerbäck med band i en soffa" loading="lazy">
+            <figcaption>Foto: Karl-Magnus Boske</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+          <figure class="ph ph--i reveal">
+            <img src="assets/band-studio.jpg" alt="Lars Winnerbäck med band i studio, svartvitt" loading="lazy">
+            <figcaption>Pressbild: United Stage</figcaption>
+            <button type="button" aria-label="Visa större"></button>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <figure class="band" aria-label="Lars Winnerbäck i en tom teater">
+      <img src="assets/live-teater.jpg" alt="Lars Winnerbäck på scen i en tom teater, svartvitt" loading="lazy" data-parallax-band>
+      <figcaption>Pressbild: United Stage</figcaption>
+    </figure>
+
+    <!-- Musik -->
+    <section class="section music" id="musik" aria-labelledby="musik-title">
+      <div class="wrap music-grid">
+        <div>
+          <h2 class="display reveal" id="musik-title">Musik</h2>
+          <div class="music-player reveal">
+            <iframe title="Lars Winnerbäck på Spotify" src="https://open.spotify.com/embed/artist/33zLgL7tT1vg7eRpWYX5uI?theme=0" height="452" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </div>
+          <div class="music-links reveal">
+            <a class="btn btn--deep" href="https://open.spotify.com/artist/33zLgL7tT1vg7eRpWYX5uI?si=JSH9INyTQQKTRFQVGrAuZw" target="_blank" rel="noopener">Spotify <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <figure class="music-photo reveal">
+          <img src="assets/thessing-huva.jpg" alt="Lars Winnerbäck i huvtröja, svartvitt" loading="lazy" style="object-position: 40% 30%">
+          <figcaption>Foto: Anders Thessing</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Merch -->
+    <section class="section merch" id="merch" aria-labelledby="merch-title">
+      <div class="wrap merch-grid">
+        <div class="merch-copy">
+          <h2 class="display reveal" id="merch-title">Merch-<br>Vinyl/CD</h2>
+          <a class="btn btn--deep reveal" href="https://winnerback.merchants.se/" target="_blank" rel="noopener">Merch &amp; skivor <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="records">
+          <a class="record reveal" href="https://winnerback.merchants.se/" target="_blank" rel="noopener">
+            <span class="disc" aria-hidden="true"></span>
+            <img src="assets/omslag-eldtuppen.jpg" alt="Omslag: Eldtuppen" loading="lazy">
+            <span>Eldtuppen</span>
+          </a>
+          <a class="record reveal" href="https://winnerback.merchants.se/" target="_blank" rel="noopener">
+            <span class="disc" aria-hidden="true"></span>
+            <img src="assets/omslag-globen.jpg" alt="Omslag: Globen" loading="lazy">
+            <span>Globen</span>
+          </a>
+          <a class="record reveal" href="https://winnerback.merchants.se/" target="_blank" rel="noopener">
+            <span class="disc" aria-hidden="true"></span>
+            <img src="assets/omslag-sjal-och-hjarta.jpg" alt="Omslag: Själ och hjärta" loading="lazy">
+            <span>Själ och hjärta</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mejllistan -->
+    <section class="section letter-section" id="brev" aria-labelledby="brev-title">
+      <div class="wrap letter-grid">
+        <div class="letter-aside">
+          <p class="eyebrow reveal">Mejllistan</p>
+          <h2 class="display" id="brev-title" data-typewriter>Utkast till ett brev</h2>
+        </div>
+
+        <div class="letter reveal">
+          <div class="stamp" aria-hidden="true"><img src="assets/thessing-portratt.jpg" alt=""></div>
+          <p>Mejllistan Utkast till ett brev är för alla oss som älskar Winnerbäck! Som medlem kan du få specialinbjudningar, möjligheter att köpa konsertbiljetter före alla andra (presale) och andra exklusiva erbjudanden. Sajna upp idag!</p>
+
+          <form class="form" id="signup" novalidate>
+            <div class="field">
+              <label for="f-first">Förnamn <b>*</b></label>
+              <input id="f-first" name="first" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label for="f-last">Efternamn <b>*</b></label>
+              <input id="f-last" name="last" autocomplete="family-name" required>
+            </div>
+            <div class="field field--full">
+              <label for="f-email">Mejladress <b>*</b></label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="f-year">Födelseår <b>*</b></label>
+              <input id="f-year" name="year" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required>
+            </div>
+            <div class="field">
+              <label for="f-city">Bostadsort <b>*</b></label>
+              <input id="f-city" name="city" autocomplete="address-level2" required>
+            </div>
+            <label class="consent">
+              <input type="checkbox" name="consent" required>
+              <span>Jag godkänner villkoren för den här mejlinglistan</span>
+            </label>
+            <p class="terms">Genom att sajna upp mig i Utkast till ett brev ger jag United Stage rätten att kontakta mig i allt som rör Lars Winnerbäck. Det kan vara, men inte begränsat till, möjligheter att köpa biljetter före alla andra, exklusiva musikutgåvor och andra inbjudningar. United Stage kommer bara kontakta mig när det rör Lars Winnerbäck.</p>
+            <div class="form-foot">
+              <button class="btn btn--deep" type="submit">Skicka in <span class="arrow" aria-hidden="true">→</span></button>
+              <span class="form-status" id="form-status" role="status"></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div>
+          <h3>Meny</h3>
+          <ul>
+            <li><a class="strike" href="#konserter">Konserter</a></li>
+            <li><a class="strike" href="#musik">Musik</a></li>
+            <li><a class="strike" href="#merch">Merch-Vinyl/CD</a></li>
+            <li><a class="strike" href="#brev">Mejllistan `Utkast till ett brev´</a></li>
+          </ul>
+        </div>
+        <div class="footer-follow">
+          <h3>Följ</h3>
+          <ul>
+            <li><a class="strike" href="https://www.facebook.com/lassewinnerback" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a class="strike" href="https://www.instagram.com/larswinnerback/" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Foto</h3>
+          <ul>
+            <li>Anders Thessing</li>
+            <li>Karl-Magnus Boske</li>
+            <li>Knotan</li>
+            <li>United Stage</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-meta">
+        <a class="strike" href="https://winnerback.se/" target="_blank" rel="noopener">Privacy Policy</a>
+        <span>Demo</span>
+      </div>
+    </div>
+    <p class="footer-word" aria-hidden="true">Lars Winnerbäck</p>
+  </footer>
+
+  <div class="demo-badge" aria-hidden="true">Demo</div>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Bild" aria-hidden="true">
+    <img alt="">
+    <div class="lightbox-bar">
+      <span id="lightbox-caption"></span>
+      <div>
+        <button class="btn" type="button" data-lb="prev" aria-label="Föregående">←</button>
+        <button class="btn" type="button" data-lb="next" aria-label="Nästa">→</button>
+        <button class="btn" type="button" data-lb="close">Stäng</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
