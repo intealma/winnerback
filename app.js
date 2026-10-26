@@ -166,6 +166,15 @@ function initHeader() {
 
 /* ---------- Rörelse ---------- */
 
+// Namnet glider upp inuti en klippt ruta. När det landat släpps klippet så att prickarna över Ä aldrig skärs av.
+function initHeroTitle() {
+  const title = document.querySelector('.hero-title');
+  const last = title.querySelector('span:last-child > span');
+  const done = () => title.classList.add('is-done');
+  last.addEventListener('animationend', done, { once: true });
+  setTimeout(done, 2000);
+}
+
 function initReveal() {
   const els = document.querySelectorAll('.reveal');
   if (reduceMotion || !('IntersectionObserver' in window)) {
@@ -301,6 +310,7 @@ renderTour();
 renderNextShow();
 renderMarquee();
 initHeader();
+initHeroTitle();
 initReveal();
 initParallax();
 initTypewriter();
